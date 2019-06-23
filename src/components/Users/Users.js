@@ -1,25 +1,31 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import UserDataContext from '../../providers/userData/userDataContext'
-import { SWITCH_PAGE } from '../../providers/actionTypes'
 
 const Users = () => {
   const userDataContext = useContext(UserDataContext)
+
+  const { searchUsers, switchPage, page, totalUsers } = userDataContext
+
+  const [search, setSearch] = useState('')
+
+  const onSubmit = e => {
+    e.preventDefault()
+    searchUsers(search)
+  }
+
   return (
     <div>
-      Hello World!{' '}
-      <button
-        disabled={userDataContext.page < 2}
-        onClick={() =>
-          userDataContext.switchPage(userDataContext.page - 1, SWITCH_PAGE)
-        }
-      >
+      {'hello'}
+      <form onSubmit={onSubmit}>
+        <input name="search" onChange={e => setSearch(e.target.value)} />
+        <input type="submit" value="s" />
+      </form>
+      <button disabled={page < 2} onClick={() => switchPage(page - 1)}>
         -
       </button>
       <button
-        disabled={userDataContext.page < userDataContext.totalUsers / 30}
-        onClick={() =>
-          userDataContext.switchPage(userDataContext.page + 1, SWITCH_PAGE)
-        }
+        disabled={page > totalUsers / 30}
+        onClick={() => switchPage(page + 1)}
       >
         +
       </button>

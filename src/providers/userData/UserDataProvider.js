@@ -3,7 +3,7 @@ import axios from 'axios'
 import { BASE_URL } from '../../services/services'
 import UserDataContext from './userDataContext'
 import UserDataReducer from './userDataReducer'
-import { GET_USERS, IS_LOADING } from '../actionTypes'
+import { FETCH_USERS, IS_LOADING, SWITCH_PAGE } from '../actionTypes'
 
 const UserDataProvider = props => {
   const initialState = {
@@ -16,17 +16,14 @@ const UserDataProvider = props => {
 
   const [state, dispatch] = useReducer(UserDataReducer, initialState)
 
-  // Initially loaded users
   useEffect(() => {
     fetchUsers()
     return () => {}
-    // Disabling a generic warning
     // eslint-disable-next-line
   }, [])
 
   console.log(state)
 
-  // Get users
   const fetchUsers = async (user = 'a', page = 1) => {
     initLoading()
 
@@ -40,7 +37,7 @@ const UserDataProvider = props => {
     })
 
     dispatch({
-      type: GET_USERS,
+      type: FETCH_USERS,
       payload: {
         users: res.data.items,
         search: user,
@@ -50,11 +47,15 @@ const UserDataProvider = props => {
     })
   }
 
-  // Switch page
-  const switchPage = async (page, type) => {
-    console.log(page, type)
+  const searchUsers = user => {
+    initLoading()
+
+    fetchUsers(user, 1)
+  }
+
+  const switchPage = async page => {
     dispatch({
-      type: type,
+      type: SWITCH_PAGE,
       payload: {
         page: page
       }
@@ -65,7 +66,6 @@ const UserDataProvider = props => {
     fetchUsers(state.search, page)
   }
 
-  // Loading...
   const initLoading = () => dispatch({ type: IS_LOADING })
 
   return (
@@ -74,8 +74,10 @@ const UserDataProvider = props => {
         users: state.users,
         search: state.search,
         page: state.page,
+        totalUsers: state.totalUsers,
         isLoading: state.isLoading,
         fetchUsers,
+        searchUsers,
         switchPage
       }}
     >

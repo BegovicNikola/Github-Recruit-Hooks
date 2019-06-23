@@ -1,8 +1,8 @@
-import { GET_USERS, SWITCH_PAGE, IS_LOADING } from '../actionTypes'
+import { FETCH_USERS, SWITCH_PAGE, IS_LOADING } from '../actionTypes'
 
 export default (state, action) => {
   switch (action.type) {
-    case GET_USERS:
+    case FETCH_USERS:
       return {
         ...state,
         users: action.payload.users,
