@@ -1,13 +1,20 @@
 import React from 'react'
+import { Router } from '@reach/router'
 import UserDataProvider from './providers/userData/UserDataProvider'
-import Users from './components/Users/Users'
+import Navigation from './components/Navigation/Navigation'
+import NotFound from './pages/NotFound'
+import Home from './pages/Home'
 import './App.css'
 
 const App = () => {
   return (
     <UserDataProvider>
       <div className="App">
-        <Users />
+        <Navigation />
+        <Router>
+          <Home path="/" />
+          <NotFound default />
+        </Router>
       </div>
     </UserDataProvider>
   )
