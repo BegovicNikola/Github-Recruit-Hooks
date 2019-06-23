@@ -1,9 +1,21 @@
-import { GET_USERS, IS_LOADING } from '../actionTypes'
+import { GET_USERS, SWITCH_PAGE, IS_LOADING } from '../actionTypes'
 
 export default (state, action) => {
   switch (action.type) {
     case GET_USERS:
-      return { ...state, users: action.payload, isLoading: false }
+      return {
+        ...state,
+        users: action.payload.users,
+        search: action.payload.search,
+        page: action.payload.page,
+        totalUsers: action.payload.totalUsers,
+        isLoading: false
+      }
+    case SWITCH_PAGE:
+      return {
+        ...state,
+        page: action.payload.page
+      }
     case IS_LOADING:
       return { ...state, isLoading: true }
     default:
